@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-13T06:32:41.347Z",
+  "mode": "Keyboard-only navigation and mocked wallet/RPC; no real transaction",
+  "checks": [
+    {
+      "name": "Skip link, wallet dialog, name, quote, approval and mint reached with Tab/Enter; visible focus ring",
+      "passed": true
+    }
+  ],
+  "focus": {
+    "text": "Mint agent card",
+    "width": "2px",
+    "style": "solid"
+  }
+}

@@ -1,0 +1,20 @@
+# Handlers In Control
+
+Static interface for the deployed HandlerDesk. An agent can trade a card's balances, while only its permanent holder can withdraw or set permissions.
+
+Deployment and integration files, relative to this site's directory:
+- ./imd-deployment.json: runtime configuration, exact pool key, vetted network addresses, attested contracts, ABI paths, SHA-256 asset inventory.
+- ./agent-guide.md: setup, buy/sell quote math, minOut, permissions, rule errors, accounting.
+- ./abi/HandlerDesk.json: full pinned implementation ABI.
+- ./abi/HandlerCards.json: full ABI of the child contract; discover its address with HandlerDesk.cards().
+- ./abi/HandlerArt.json: on-chain artwork renderer ABI.
+- ./abi/LaunchToken.json: launched HIC token ABI.
+- ./abi/Quoter.json, ./abi/UniversalRouter.json, ./abi/Permit2.json, ./abi/ERC20.json: minimal standard integration interfaces.
+
+Use deployment.network.uniswapV4 for every public swap, quote and approval. Wallet swaps use the Universal Router. Agent card trades call the Desk directly, with no router approval by the agent. Mint/deposit approvals target the Desk; wallet ERC-20 swaps approve Permit2 and then authorize the Universal Router in Permit2.
+
+Quote before every swap. Buy: quote imdIn - floor(imdIn/400). Sell: quote gross IMD, subtract floor(gross/400), then apply slippage. Minimum output must be positive. Quotes are simulated reads, never transactions. Always simulate the actual Desk call from the current agent before requesting a signature.
+
+Pages: #/ (mint and leaderboard), #/cards (holder management), #/trade (wallet swap), #/agent/<id> (public record and agent trading), #/builders (integration and owner/keeper controls).
+
+All balances are public on chain. The My cards UI only loads balances for the connected holder. Leaderboard scans are paginated and state their coverage. Trade history reads 1,000-block windows and explicitly reports its loaded range. No off-chain indexer, oracle, analytics, private RPC key or backend is used.

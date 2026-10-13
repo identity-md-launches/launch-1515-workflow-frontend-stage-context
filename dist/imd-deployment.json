@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "launchId": "a3907511-d5f4-43b7-b2b4-03d34cb166cb",
+  "chainId": 1,
+  "sourceCommit": "73174a3aabac5ee1c52275ef1e651a65f65610f3",
+  "attestationHash": "b760b739a0d8e8659fb68cf442ef4a29c5dc8262466c30fa9e9627bf422cc97b",
+  "contracts": [
+    {
+      "name": "LaunchToken",
+      "address": "0x7cf6fd992e6ff892caa8651f6d4e93859e1c1c71",
+      "abiHash": "38880b8e56d42ce900f744a7908c7139632a49f1c3f33385c64ceaed29d37bee",
+      "abiPath": "abi/LaunchToken.json"
+    },
+    {
+      "name": "HandlerArt",
+      "address": "0x6d24f0f9dd65a2f793bf83dae9d1ab8640e6b445",
+      "abiHash": "2492f3c4816553b80798a70518e4aaa0853084722cbca09a4cf621a27e6c4aff",
+      "abiPath": "abi/HandlerArt.json"
+    },
+    {
+      "name": "HandlerDesk",
+      "address": "0x5f8078b871908632db0ebaaa4f79a122e4916dd8",
+      "abiHash": "2124a16230367f4374d0116d191142900ee26434cb66e0e90b12ba144e2b87d8",
+      "abiPath": "abi/HandlerDesk.json"
+    }
+  ],
+  "poolKey": {
+    "fee": 12500,
+    "hooks": "0x784ff9a3ac5d88a30bfff6f7f2a270161fbe6000",
+    "currency0": "0x7cf6fd992e6ff892caa8651f6d4e93859e1c1c71",
+    "currency1": "0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7",
+    "tickSpacing": 60
+  },
+  "network": {
+    "chainId": 1,
+    "name": "Ethereum",
+    "testnet": false,
+    "rpcUrls": [
+      "https://ethereum-rpc.publicnode.com",
+      "https://eth.drpc.org"
+    ],
+    "explorer": "https://etherscan.io",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "faucets": [],
+    "uniswapV4": {
+      "poolManager": "0x000000000004444c5dc75cb358380d2e3de08a90",
+      "universalRouter": "0x66a9893cc07d91d95644aedd05d03f95e1dba8af",
+      "quoter": "0x52f0e24d1c21c8a0cb1e5a5dd6198556bd9e1203",
+      "stateView": "0x7ffe42c4a5deea5b0fec41c94c136cf115597227",
+      "positionManager": "0xbd216513d74c8cf14cf4747e6aaa6420ff64ee9e",
+      "permit2": "0x000000000022d473030f116ddee9f6b43ac78ba3"
+    },
+    "pairToken": {
+      "address": "0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7",
+      "symbol": "IMD",
+      "name": "Identity.md",
+      "decimals": 18
+    },
+    "otherPairTokens": [
+      {
+        "id": "fwa",
+        "address": "0xa0df17b5ac76ababa36e1450e2cbcd18a620c845",
+        "symbol": "FWA",
+        "name": "Fake World Assets",
+        "decimals": 18
+      }
+    ]
+  },
+  "walletAddChain": {
+    "chainId": "0x1",
+    "chainName": "Ethereum",
+    "rpcUrls": [
+      "https://ethereum-rpc.publicnode.com",
+      "https://eth.drpc.org"
+    ],
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "blockExplorerUrls": [
+      "https://etherscan.io"
+    ]
+  },
+  "assets": [
+    {
+      "path": "abi/ERC20.json",
+      "sha256": "8b217ad6425fff0ac208fe97c3367c78209facb23b742ca92caa1c6088428366"
+    },
+    {
+      "path": "abi/HandlerArt.json",
+      "sha256": "3af49e6c24689c2f815b510084df9b2648de2df2f5b29eb03c88af9229810405"
+    },
+    {
+      "path": "abi/HandlerCards.json",
+      "sha256": "b220771756db1ffd0f1228b4fa427bf803feadfd9632794c0c944b596ea1f674"
+    },
+    {
+      "path": "abi/HandlerDesk.json",
+      "sha256": "398760b8245ad16fb0ea52128f07f449c940a5b0f314939dcb078a128d5afbd9"
+    },
+    {
+      "path": "abi/LaunchToken.json",
+      "sha256": "9578fcb499b4ba5fac51462a67a2654d9f803e0ea3af9bdb19130ff695808542"
+    },
+    {
+      "path": "abi/Permit2.json",
+      "sha256": "d4bcbe027f32a4ebf9a04dc122c332155bdb166d0f80278869d121dd30f11731"
+    },
+    {
+      "path": "abi/Quoter.json",
+      "sha256": "7f7fc4ea986a47c4fa51210389fe1d8799df5c506433644676d1b34e29256653"
+    },
+    {
+      "path": "abi/UniversalRouter.json",
+      "sha256": "4ec33b6dcbc1bd759416ad9350e63ad29f8f0b50d21b29ec368aa4159586a1fd"
+    },
+    {
+      "path": "agent-guide.md",
+      "sha256": "bfbfaefaea62db8a7af6c27a818c7bc52aa5b0060c2225b7e813cc80eaa0f56e"
+    },
+    {
+      "path": "assets/archivo-latin-standard-normal-DY7AcnAa.woff2",
+      "sha256": "e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e"
+    },
+    {
+      "path": "assets/ccip-2WV8hGPL.js",
+      "sha256": "abda5de38a2c54a2d44475acedc9369f76949de371a325c486706656208628ad"
+    },
+    {
+      "path": "assets/index-Bs2aVU77.css",
+      "sha256": "8eb46df3e943e507397283fe110c03be101df26f735a70142fb50b08429190f5"
+    },
+    {
+      "path": "assets/index-rOPyCEGC.js",
+      "sha256": "8ecd5b704e31b94756220647cd1781b8490e97cfc4743f1186b0e420284468e6"
+    },
+    {
+      "path": "assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2",
+      "sha256": "14425ba9c695763c1547f48a206b7aa60350a33ae23de09f0407877f3fcd89eb"
+    },
+    {
+      "path": "favicon.svg",
+      "sha256": "25230a599a657507bc2d736bdbff7a50ca735e96c6a87ec5790432c1d23c0a88"
+    },
+    {
+      "path": "index.html",
+      "sha256": "a3944c369e1e38014f20d412e7c1a5838fa9461cbd7d203269dc6103a5aca4d7"
+    },
+    {
+      "path": "licenses/Archivo-OFL.txt",
+      "sha256": "c3c8402eec0e31dc9a76851235b1c02a0bb821488b2db8e35bcc2ab60ca8fc2b"
+    },
+    {
+      "path": "licenses/JetBrains-Mono-OFL.txt",
+      "sha256": "403581b69dac5cff4079205e01c6b467e56af449ecbd7247693ddb1baafa005b"
+    },
+    {
+      "path": "llms.txt",
+      "sha256": "62a4870290a07a95da1f0d0d517c4acba1fe927ffd86b0760859814b01c42782"
+    },
+    {
+      "path": "notices.txt",
+      "sha256": "a3b1aaa0086234c146dae2264bf60a9b9e36f6e8eeacc76c7f6397b10ab15be6"
+    },
+    {
+      "path": "social.png",
+      "sha256": "d34d6adcda752d03dbff723a930ddebca2f4084186fc4a1d88b8fb86d514577d"
+    }
+  ]
+}

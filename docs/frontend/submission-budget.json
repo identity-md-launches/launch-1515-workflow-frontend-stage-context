@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-13",
+  "writeScope": "Only web/, dist/, docs/; web/.gitignore explicitly allowed",
+  "newDeliverableFiles": 95,
+  "newDeliverableBytes": 2072783,
+  "allExistingGitObjectBytesUncompressed": 1403475,
+  "conservativeSubmissionBudgetBytes": 3704610,
+  "limitBytes": 8388608,
+  "budgetMethod": "All existing Git object bytes plus all new deliverable bytes, 1 KiB per new file and 128 KiB additional metadata allowance; no actual bundle could be created because .git is read-only.",
+  "exportAssets": 21,
+  "exportAssetBytes": 886711,
+  "forbiddenFiles": [],
+  "submodules": 0,
+  "commit": "Not created: .git/index.lock could not be written (read-only file system)."
+}

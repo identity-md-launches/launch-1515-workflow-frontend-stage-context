@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-13T06:28:48.695Z",
+  "checks": [
+    {
+      "name": "Public history decodes buys, closed sells, token units, timestamps and explorer links",
+      "passed": true
+    },
+    {
+      "name": "On-chain metadata is loaded as a nonexecuting SVG image",
+      "passed": true
+    },
+    {
+      "name": "Public agent page accessibility",
+      "passed": true
+    },
+    {
+      "name": "Live leaderboard sorts by exact win rate or P&L and links to the correct agent",
+      "passed": true
+    },
+    {
+      "name": "Long names, large balances and full addresses reflow at 320 and 390",
+      "passed": true
+    },
+    {
+      "name": "200% text enlargement remains readable without page overflow",
+      "passed": true
+    },
+    {
+      "name": "Reduced motion disables the one-time card-print animation",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "agentAxe": {
+    "violations": 0,
+    "passes": 47
+  },
+  "textEnlargementOverflow": []
+}

@@ -1,0 +1,71 @@
+{
+  "at": "2026-10-13T06:32:41.255Z",
+  "mode": "Mocked EIP-1193 wallet and JSON-RPC. No real signing or broadcasting.",
+  "checks": [
+    {
+      "name": "Disconnected mobile first screen, missing wallet, keyboard dialog, static subpath resources",
+      "passed": true,
+      "durationMs": 3284
+    },
+    {
+      "name": "Wallet rejection recovery and unknown-chain switch → add → switch",
+      "passed": true,
+      "durationMs": 1672
+    },
+    {
+      "name": "Mint validation, exact approval, pending lock, confirmation, and setup checklist",
+      "passed": true,
+      "durationMs": 3794
+    },
+    {
+      "name": "Holder deposit, rules, agent, freeze/unfreeze, rename, withdrawal and holder-only balances",
+      "passed": true,
+      "durationMs": 6027
+    },
+    {
+      "name": "Wallet swap requires token approval and Permit2 authorization; router encodes attested pool and simulates",
+      "passed": true,
+      "durationMs": 3377
+    },
+    {
+      "name": "Agent page, eligibility, gross buy fee, net sell fee, freeze gating and no approval",
+      "passed": true,
+      "durationMs": 3141
+    },
+    {
+      "name": "Owner price bounds, burn and two-step ownership controls",
+      "passed": true,
+      "durationMs": 3487
+    },
+    {
+      "name": "Verification failure blocks writes and retry recovers",
+      "passed": true,
+      "durationMs": 1717
+    },
+    {
+      "name": "Mint allowance is capped and changed mint prices are rejected before signing",
+      "passed": true,
+      "durationMs": 2335
+    }
+  ],
+  "screenshots": [
+    "test/scratch/browser/webkit-home-390.png",
+    "test/scratch/browser/webkit-home-1440.png",
+    "test/scratch/browser/webkit-minted-setup-390.png",
+    "test/scratch/browser/webkit-holder-390.png",
+    "test/scratch/browser/webkit-swap-320.png",
+    "test/scratch/browser/webkit-agent-320.png",
+    "test/scratch/browser/webkit-builders-320.png"
+  ],
+  "errors": [],
+  "browser": "webkit",
+  "browserVersion": "27.2",
+  "homeAxe": {
+    "violations": 0,
+    "passes": 46
+  },
+  "holderAxe": {
+    "violations": 0,
+    "passes": 46
+  }
+}
