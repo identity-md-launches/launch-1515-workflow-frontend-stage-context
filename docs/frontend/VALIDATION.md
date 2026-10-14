@@ -1,3 +1,5 @@
+> Earlier frontend-stage report. Current Autopilot changes and revalidation are recorded in [Autopilot validation](autopilot/validation.md).
+
 # Frontend validation and design review
 
 Status: **Frontend source/export/checks complete; Git commit blocked by read-only repository metadata.** This is a worker-authored evidence record, not independent certification of deployed economics or publication. No real transaction was signed or broadcast. No contract, deployment, root build configuration, or publishing state was changed.

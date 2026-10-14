@@ -47,8 +47,18 @@ export class DeskApi {
       chain: this.chain,
       transport: fallback(
         [
-          ...d.network.rpcUrls.map((url) =>
-            http(url, { timeout: 7000, retryCount: 0 }),
+          ...[
+            ...new Set([
+              ...d.network.rpcUrls,
+              "https://rpc.flashbots.net",
+              "https://rpc.mevblocker.io",
+            ]),
+          ].map((url) =>
+            http(url, {
+              timeout: 7000,
+              retryCount: 0,
+              batch: { batchSize: 3, wait: 10 },
+            }),
           ),
           ...(provider ? [custom(provider, { retryCount: 0 })] : []),
         ],

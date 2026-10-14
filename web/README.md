@@ -1,6 +1,6 @@
 # Handlers In Control frontend
 
-A static Vite + React + TypeScript interface for the deployed HIC launch and HandlerDesk. Source, package manifests and build tools live here. The submitted production site is `../dist/`; deployment and validation documentation live in `../docs/frontend/` and `../docs/DESIGN.md`.
+A static Vite + React + TypeScript interface for the deployed HIC launch and HandlerDesk. Source, package manifests and build tools live here. The submitted production site is `../dist/`; deployment and validation documentation live in `../docs/frontend/autopilot/validation.md` and `../DESIGN.md`.
 
 ## Install, run and rebuild
 
@@ -21,15 +21,17 @@ Vite uses `base: './'`. Every route is a hash route and every bundled asset and 
 
 ## One runtime configuration
 
-`dist/imd-deployment.json` is the sole runtime deployment configuration. `src/config.ts` fetches it and loads the referenced ABIs; it verifies the attested implementation ABIs using canonical Keccak and the auxiliary ABI files using their asset SHA-256. `src/chain.ts` constructs RPC clients and takes every protocol address from this runtime configuration. There is no address, chain, or RPC map embedded in the application bundle.
+`dist/imd-deployment.json` is the sole runtime deployment configuration. `src/config.ts` fetches it and loads the referenced ABIs; it verifies the attested implementation ABIs using canonical Keccak and the auxiliary ABI files using their asset SHA-256. `src/chain.ts` constructs RPC clients and takes every protocol address from this runtime configuration. Protocol addresses still come from the manifest. Autopilot adds only the six task-supplied watchlist defaults (HIC comes from the manifest) and the requested Flashbots/MEV Blocker RPC fallbacks.
 
 `deployment/handoff.json` and `deployment/network.json` are preserved build inputs copied from the supplied handoff, not a second runtime configuration. Do not replace them casually. The exported contract set is exactly LaunchToken, HandlerArt and HandlerDesk. The NFT is created internally by HandlerDesk; its address is read from `cards()`, its binding is checked, and its pinned implementation ABI is exported as an additional asset.
 
-Before enabling writes, the app checks the RPC chain ID, nonempty deployed code, the desk's HIC/IMD/PoolManager references and exact pool key, the child card's desk/art references, and token decimals. Reads use the supplied public RPCs with a connected-wallet fallback only on the correct network. Explicit refresh and a 30-second visible-page refresh keep the state current. Event scans remain user-driven and bounded. There are no private RPC credentials, analytics or remote scripts/fonts.
+Before enabling writes, the app checks the RPC chain ID, nonempty deployed code, the desk's HIC/IMD/PoolManager references and exact pool key, the child card's desk/art references, and token decimals. Reads use JSON-RPC batches of at most three, the supplied public RPCs, then Flashbots and MEV Blocker, followed by the connected-wallet fallback only on the correct network. Explicit refresh and a 30-second visible-page refresh keep the state current. Event scans remain user-driven and bounded. There are no private RPC credentials, analytics or remote scripts/fonts.
 
 Browser wallets are discovered with EIP-6963 and an EIP-1193 injected-provider fallback (including MetaMask and Coinbase Wallet). No WalletConnect project ID was supplied; no project ID is invented. Users can open the site in a mobile wallet browser. Wrong-chain switching offers the exact supplied `wallet_addEthereumChain` parameters after an unknown-chain response.
 
 ## Flows
+
+- **Autopilot:** `#/autopilot`, holder-owned card setup, encrypted local key, bounded rules or personal AI, local transaction signing, activity, Stop and Freeze. See the root README.
 
 - **The desk:** live mint price, name validation, slippage-protected mint quote, exact IMD allowance to the Desk, mint, then setup checklist. An existing larger Desk allowance must be reduced to the current mint amount before minting, so a later price increase cannot pull more than that approval.
 - **My cards:** holder-only UI balance loading, IMD sell estimates, deposit, withdraw, agent assignment/revocation, daily and per-trade limits, freeze/unfreeze, rename, and direct ID lookup. The underlying blockchain balances are public.
@@ -37,7 +39,7 @@ Browser wallets are discovered with EIP-6963 and an EIP-1193 injected-provider f
 - **Trade HIC:** wallet swaps use the handoff's Uniswap v4 quoter, Permit2 and Universal Router. Quotes are simulated. Insufficient ERC-20 and Permit2 allowances are separate approval steps with exact amounts; Permit2 router authorization and transaction deadline last 20 minutes. The transaction is simulated before signing. ERC-20 swaps send zero native value.
 - **Builders:** full ABI downloads, integration math and errors, verified deployment links, permissionless hourly buy-and-burn, owner-only mint price, two-step ownership proposal/acceptance. Disabled contract operations (renunciation, soulbound NFT transfers/approvals, internal mint/callback) are deliberately not exposed as user actions.
 
-All writes recheck wallet chain/account, simulate, request one signature, wait for a successful receipt, then refresh. Pending actions lock duplicate submission through confirmation. Errors and explorer links stay near the triggering action. Changed token, amount or slippage settings invalidate quotes; quotes expire after 60 seconds. Transaction replacement/cancellation is distinguished from completing the requested action. Browser key generation is not needed: the approved alternative, supplying an agent address, is implemented.
+All writes recheck wallet chain/account, simulate, request one signature, wait for a successful receipt, then refresh. Pending actions lock duplicate submission through confirmation. Errors and explorer links stay near the triggering action. Changed token, amount or slippage settings invalidate quotes; quotes expire after 60 seconds. Transaction replacement/cancellation is distinguished from completing the requested action. The existing manual agent flow is preserved. The new Autopilot page generates and encrypts its own agent key and signs its trades locally; see the root README for setup and security behavior.
 
 Leaderboard scans load 25 cards per batch and display coverage; only cards with at least ten closed results qualify. Sorting uses bigint rational comparisons. History loads 1,000-block windows with an older-page control and explicit range input. Neither surface pretends partial results are complete. No off-chain shared state or fabricated live records are used. The home badge is clearly marked **Example**.
 
@@ -67,7 +69,7 @@ After any change to exported files, run the build or `node web/scripts/manifest.
 
 ## Design and limitations
 
-The implemented design system is documented in `docs/DESIGN.md`. This path honors the task's explicit write budget; the conflicting request for a repository-root DESIGN.md does not expand that budget. Only `web/.gitignore` was created as an ignore file, under its explicit allowance. It excludes generated dependency, cache and test-result directories at every nesting level within `web/`.
+The current implemented design system is documented in root `DESIGN.md`; `docs/DESIGN.md` records the earlier version. Current Autopilot validation and six-domain review are in `docs/frontend/autopilot/validation.md`. The existing `web/.gitignore` remains unchanged and excludes generated dependencies and caches at every nesting level inside `web/`.
 
 No USD source is provided, so the UI uses IMD/HIC/coin units and states that USD prices are unavailable. There is no ENS resolver address in the supplied network configuration, so address inputs accept and validate hexadecimal addresses; full checksummed addresses, copy controls and explorer links are provided. Open Graph image paths are relative until the publisher supplies the final gateway/name. The worker does not publish, pin IPFS, redeploy contracts, certify production economic behavior, or broadcast a funded test transaction.
 

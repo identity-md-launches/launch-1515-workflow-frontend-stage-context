@@ -5,6 +5,7 @@ import { MyCards } from "./Cards";
 import { Agent } from "./Agent";
 import { Trading } from "./Trading";
 import { Builders } from "./Builders";
+import { Autopilot } from "./Autopilot";
 import { WalletDialog } from "./components";
 import { explain } from "./logic";
 import type { CardEntry } from "./types";
@@ -138,6 +139,7 @@ export function App() {
           {[
             ["#/", "The desk"],
             ["#/cards", "My cards"],
+            ["#/autopilot", "Autopilot"],
             ["#/trade", "Trade HIC"],
             ["#/builders", "Builders"],
           ].map(([href, label]) => (
@@ -202,6 +204,8 @@ export function App() {
           <Home {...recordProps} />
         ) : path === "#/cards" ? (
           <MyCards {...recordProps} />
+        ) : path === "#/autopilot" ? (
+          <Autopilot {...recordProps} />
         ) : path === "#/trade" ? (
           <Trading />
         ) : path === "#/builders" ? (

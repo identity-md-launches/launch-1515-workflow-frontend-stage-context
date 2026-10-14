@@ -2,7 +2,57 @@
 
 You're the handler. Your AI is the agent.
 
-This contribution implements the contract stage: a fixed-supply HIC token, a segregated trading desk, permanent Handler Cards, on-chain JSON/SVG artwork, tests, and exported ABIs. The approved frontend, manifest, independent review, source publication, admission and deployment are separate workflow stages handled by their respective contributors and services.
+The live Ethereum contracts remain unchanged. The static React frontend now includes **Autopilot** at `#/autopilot`: a browser agent with editable rules or the holder’s own AI provider key. The production export is in `dist/`, prepared as the next version of **hic.site.identitymd.eth**. Publishing is performed by the assignment’s site publisher from these bytes.
+
+## Website: install, preview and rebuild
+
+Use Node 22.12+ and npm, from the repository root:
+
+```sh
+npm ci --prefix web
+npm run dev --prefix web
+npm run typecheck --prefix web
+npm run build --prefix web
+npm run verify --prefix web
+npm run preview --prefix web
+```
+
+`web/package.json` and `web/package-lock.json` are retained unchanged. Vite exports to root `dist/` with relative asset URLs and hash routing; serve it over HTTP(S), including under a subpath. The build verifies the original ABI hashes and generates the static asset inventory. Keep the pinned source commit in Git history for that check. No backend, environment file or private service credential is required.
+
+If the machine’s default npm cache is read-only, use `npm ci --prefix web --cache /tmp/hic-npm-cache`. Generated dependencies and caches are excluded by the existing `web/.gitignore`; the export includes only runtime assets.
+
+## Autopilot
+
+Connect the holder wallet, select an owned card, then create or unlock its agent key, assign it, set limits (2 IMD/day and 0.5 IMD/trade by default), fund its ETH gas and Start. Deposit trading IMD through the existing My cards flow. The agent key cannot withdraw card funds. Stop cancels future work; Freeze calls the existing holder-only contract function. Already submitted transactions can still confirm.
+
+The fresh secp256k1 key is generated locally. Agent and API secrets are stored together using AES-256-GCM and PBKDF2-SHA-256 with **200,000 iterations**, random salt/IV and a holder/card-specific authenticated context. A passphrase of at least 12 characters is required. The key can be exported once as a plaintext local download; keep that backup private. Reloading requires unlocking. The private key and passphrase never enter requests. The API key goes only to the provider endpoint selected when it was saved.
+
+Rules use the last 60 in-memory samples, buying a 5% rise over 10 samples only when no position is held. Default exits are +12%, -8%, or 12 hours; cooldown after a sale is one hour. All rule numbers are editable. Position ages and recent sales are reconstructed from on-chain trade/withdrawal events on start; old positions are recognized even after a reload. Sampling survives Stop/Start in the same page and resets on reload/navigation.
+
+Your AI supports Anthropic (default model `claude-haiku-5-5`) or a holder-supplied HTTPS OpenAI-compatible base URL/full chat-completions endpoint and model. The provider must allow browser CORS requests and accept the supplied model/key. Each call receives only the trading snapshot and instructions, and returns one JSON decision. For AI sells, `imd` means the desired current IMD value to liquidate; the validator converts it to token units and rejects an excess. Invalid JSON becomes hold. Provider errors are logged without echoing response bodies.
+
+Each 60-second check reads the card, daily spending, card IMD balance and watched positions; untradable coins are dropped. Buys respect all four limits, including the page size and a 0.1 IMD minimum. Orders are revalidated, re-quoted on the existing exact launch pool, protected by editable 3% slippage and simulated before local signing. Three consecutive failed trade attempts stop the loop. An unknown confirmation stops immediately and keeps its hash for reconciliation. A browser lock prevents two tabs from running the same card.
+
+Autopilot runs only while this tab is open. Leaving its page, changing wallet/network or losing deployment verification stops it. Browser background throttling or sleep can delay checks. The feed retains 200 local entries; Share opens X with actual closed-trade statistics and the existing public record link. This is not a background server or a scheduled service.
+
+## Frontend validation
+
+```sh
+npm test --prefix web
+web/node_modules/.bin/tsx --test web/tests/autopilot.test.ts
+npm run test:browser --prefix web
+node web/tests/autopilot-browser.mjs
+HIC_BROWSER=webkit node web/tests/autopilot-browser.mjs
+web/node_modules/.bin/tsx web/tests/live.ts
+```
+
+Install Playwright Chromium/WebKit and their platform libraries when needed. Test scripts run their own bounded local server under `/preview/`. An optional `HIC_WEBKIT_EXECUTABLE` points to a prepared WebKit launcher. All interaction tests use mocked wallets/RPC/providers and never broadcast real transactions. The live script performs reads and quote simulation only.
+
+Current results: production build/typecheck and asset/ABI verification pass; the existing 11 unit checks and 9 browser scenarios pass. Autopilot’s encryption, validator, engine, history and RPC checks, and Chromium/WebKit interaction results are recorded in [validation](docs/frontend/autopilot/validation.md), with limitations and screenshots. The required home design probe passes all 16 checks. Live verification reads a 0.2 IMD mint price. No funded live trade or paid AI provider call was made.
+
+The implemented visual system is documented in [DESIGN.md](DESIGN.md). Detailed existing frontend setup remains in [web/README.md](web/README.md).
+
+The contract documentation below describes the original deployed implementation.
 
 ## Build and test
 

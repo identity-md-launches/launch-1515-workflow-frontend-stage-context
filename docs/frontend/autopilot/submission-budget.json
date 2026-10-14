@@ -1,0 +1,9 @@
+{
+  "limitBytes": 8388608,
+  "fileCount": 255,
+  "completeTreeBytes": 4093620,
+  "completeTreeGitBundleBytes": 1775596,
+  "distBytesIncludingManifest": 953787,
+  "passed": true,
+  "method": "Full deliverable file tree imported into an isolated scratch Git object store and bundled. No repository Git metadata changed; this does not include unrelated historic commits. Inputs and generated dependency/cache/scratch directories are excluded."
+}

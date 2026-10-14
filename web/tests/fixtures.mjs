@@ -10,6 +10,9 @@ import {
   encodeAbiParameters,
   parseAbiParameters,
   toHex,
+  parseTransaction,
+  recoverTransactionAddress,
+  keccak256,
   zeroAddress,
 } from "viem";
 export const root = fileURLToPath(new URL("../../", import.meta.url));
@@ -91,6 +94,9 @@ export function fixture() {
     allowances: new Map(),
     permits: new Map(),
     walletBalance: 1000n * E,
+    ethBalances: new Map(),
+    agentWrites: [],
+    rpcPayloads: [],
     mintPrice: E / 5n,
     owner: ADDR.holder,
     pendingOwner: zeroAddress,
@@ -175,7 +181,7 @@ export function block(s, n = s.block) {
     number: toHex(n),
     hash: "0x" + "ab".repeat(32),
     parentHash: "0x" + "cd".repeat(32),
-    timestamp: toHex(s.time),
+    timestamp: toHex(s.time - (s.block - n) * 12n),
     nonce: "0x0000000000000000",
     difficulty: "0x0",
     totalDifficulty: "0x0",
@@ -358,10 +364,67 @@ function readCall(s, tx) {
 export async function rpc(s, req) {
   const { method, params = [] } = req;
   s.requests.push(method);
+  s.rpcPayloads.push(req);
   if (s.rpcOffline) throw Error("Mock RPC unavailable");
   switch (method) {
     case "eth_chainId":
       return "0x1";
+    case "eth_getBalance":
+      return toHex(s.ethBalances.get(params[0].toLowerCase()) ?? 0n);
+    case "eth_maxPriorityFeePerGas":
+      return "0x3b9aca00";
+    case "eth_sendRawTransaction": {
+      const tx = parseTransaction(params[0]);
+      const from = await recoverTransactionAddress({
+        serializedTransaction: params[0],
+      });
+      const decoded = decodeFunctionData({
+        abi: abis.HandlerDesk,
+        data: tx.data,
+      });
+      const [id, token, value, minOut] = decoded.args;
+      const current = card(s, id);
+      if (from.toLowerCase() !== current.agent.toLowerCase() || current.frozen)
+        throw Error("Agent forbidden");
+      const isBuy = decoded.functionName === "buy";
+      s.agentWrites.push({ ...decoded, from, to: tx.to, chainId: tx.chainId });
+      const tokenAmount = isBuy ? (value - value / 400n) * 2n : value;
+      const imdAmount = isBuy ? value : value * 2n - (value * 2n) / 400n;
+      if ((isBuy ? tokenAmount : imdAmount) < minOut) throw Error("Slippage");
+      const tokenKey = balKey(id, token),
+        imdKey = balKey(id, ADDR.imd);
+      s.balances.set(
+        tokenKey,
+        (s.balances.get(tokenKey) ?? 0n) + (isBuy ? tokenAmount : -tokenAmount),
+      );
+      s.balances.set(
+        imdKey,
+        (s.balances.get(imdKey) ?? 0n) + (isBuy ? -imdAmount : imdAmount),
+      );
+      current.trades++;
+      if (isBuy) current.spentToday += value;
+      else current.wins++;
+      const hash = keccak256(params[0]);
+      s.block++;
+      s.nonce++;
+      s.receipts.set(hash, {
+        transactionHash: hash,
+        transactionIndex: "0x0",
+        blockHash: "0x" + "ab".repeat(32),
+        blockNumber: toHex(s.block),
+        from,
+        to: tx.to,
+        cumulativeGasUsed: "0x186a0",
+        gasUsed: "0x186a0",
+        contractAddress: null,
+        logs: [],
+        logsBloom: "0x" + "00".repeat(256),
+        status: "0x1",
+        effectiveGasPrice: "0x3b9aca00",
+        type: "0x2",
+      });
+      return hash;
+    }
     case "eth_blockNumber":
       return toHex(s.block);
     case "eth_getCode":
@@ -391,7 +454,13 @@ export async function rpc(s, req) {
 export async function attach(page, s, { wallet = true } = {}) {
   await page.route("https://**/*", async (route) => {
     const url = route.request().url();
-    if (!deployment.network.rpcUrls.some((r) => url.startsWith(r)))
+    if (
+      ![
+        ...deployment.network.rpcUrls,
+        "https://rpc.flashbots.net",
+        "https://rpc.mevblocker.io",
+      ].some((r) => url.startsWith(r))
+    )
       return route.abort();
     if (s.rpcOffline) return route.abort();
     try {
@@ -452,15 +521,23 @@ export async function attach(page, s, { wallet = true } = {}) {
           };
         }
         const tx = req.params[0];
-        const decoded = decodeFunctionData({
-          abi: abiFor(tx.to),
-          data: tx.data,
-        });
+        const decoded =
+          tx.data && tx.data !== "0x"
+            ? decodeFunctionData({
+                abi: abiFor(tx.to),
+                data: tx.data,
+              })
+            : { functionName: "nativeTransfer", args: [] };
         const { functionName: fn, args = [] } = decoded;
         s.writes.push({ ...decoded, to: tx.to.toLowerCase(), value: tx.value });
         const to = tx.to.toLowerCase();
         const hash = "0x" + (++s.nonce).toString(16).padStart(64, "0");
         s.block++;
+        if (fn === "nativeTransfer")
+          s.ethBalances.set(
+            to,
+            (s.ethBalances.get(to) ?? 0n) + BigInt(tx.value),
+          );
         if (fn === "approve" && to !== ADDR.permit2)
           s.allowances.set(allowKey(s.account, to, args[0]), args[1]);
         if (fn === "approve" && to === ADDR.permit2)

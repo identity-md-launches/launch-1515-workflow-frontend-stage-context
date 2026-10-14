@@ -1544,3 +1544,332 @@ dialog::backdrop {
     --badge-angle: -2deg;
   }
 }
+
+/* Autopilot shares the desk's paper, ink and six-step type scale. */
+.autopilot-heading {
+  padding-bottom: 20px;
+}
+.autopilot-heading h1 {
+  margin-top: 0;
+}
+.autopilot-banner {
+  padding: 12px 16px;
+  background: var(--surface);
+  border-inline-start: 3px solid var(--ink);
+}
+.autopilot-empty {
+  padding-block: 28px 48px;
+}
+.autopilot-empty p {
+  margin-block: 12px 24px;
+  max-width: 50ch;
+}
+.autopilot-picker {
+  max-width: 520px;
+  margin-block: 24px 32px;
+}
+.autopilot-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 72px;
+  align-items: start;
+}
+.autopilot-grid > * {
+  min-width: 0;
+}
+.autopilot-setup > .section-heading {
+  align-items: baseline;
+}
+.autopilot-setup > .section-heading a {
+  font-size: var(--small);
+}
+.autopilot-steps {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+}
+.autopilot-step {
+  padding-block: 24px;
+  border-top: 1px solid var(--line);
+}
+.step-heading,
+.step-heading h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.step-heading {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.step-heading h3 {
+  font-size: var(--subhead);
+}
+.step-number {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.step-status {
+  font-size: var(--small);
+  color: var(--muted);
+}
+.autopilot-step p {
+  margin-block: 12px;
+  font-size: var(--small);
+}
+.autopilot-step small {
+  margin-top: 12px;
+}
+.autopilot-step > button {
+  margin-top: 8px;
+}
+.autopilot-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.autopilot-step .address-block {
+  margin-top: 16px;
+}
+.autopilot-step > a {
+  display: inline-block;
+  margin: 12px;
+  font-size: var(--small);
+}
+.autopilot-step .run-status {
+  font-size: var(--body);
+  font-weight: 600;
+}
+.autopilot-freeze {
+  border-top: 1px solid var(--line);
+  margin-top: 16px;
+  padding-block: 24px;
+}
+.autopilot-freeze p {
+  font-size: var(--small);
+  margin-block: 12px 16px;
+}
+.danger {
+  color: var(--loss-text);
+  border-color: var(--loss-text);
+}
+.autopilot-config fieldset {
+  border: 0;
+  padding: 0;
+  margin: 16px 0 0;
+  min-width: 0;
+}
+.autopilot-config fieldset:disabled {
+  opacity: 1;
+}
+.brain-toggle {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.brain-toggle label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  flex: 1;
+  border: 1px solid var(--line);
+  padding: 10px;
+  cursor: pointer;
+}
+.brain-toggle label:has(:checked) {
+  border-color: var(--ink);
+  background: var(--surface);
+}
+.brain-toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--ink);
+}
+.rule-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0 16px;
+}
+.autopilot-config p {
+  font-size: var(--small);
+  margin-block: 12px;
+}
+.autopilot-policy {
+  margin-top: 32px;
+}
+.field textarea {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--white);
+  resize: vertical;
+}
+.address-input {
+  overflow-wrap: anywhere;
+  font-family: "JetBrains Mono", monospace;
+  font-size: var(--body);
+}
+.field input:disabled,
+.field textarea:disabled {
+  color: var(--muted);
+  background: var(--surface);
+}
+.autopilot-snapshot {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.coin-samples,
+.dropped-coins {
+  list-style: none;
+  padding: 0;
+}
+.coin-samples li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-block: 12px;
+  border-top: 1px solid var(--line);
+}
+.coin-samples span,
+.dropped-coins {
+  font-size: var(--small);
+}
+.dropped-coins li {
+  overflow-wrap: anywhere;
+  margin-top: 12px;
+}
+.autopilot-feedback {
+  font-size: var(--small);
+}
+.autopilot-feedback a {
+  display: inline-block;
+}
+.autopilot-activity {
+  padding-top: 32px;
+  border-top: 1px solid var(--ink);
+  margin-top: 24px;
+}
+.autopilot-activity > p {
+  margin-top: 12px;
+  font-size: var(--small);
+}
+.activity-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 24px;
+}
+.activity-list li {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.25fr) minmax(0, 1fr);
+  gap: 24px;
+  padding-block: 16px;
+  border-top: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.activity-list li > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--muted);
+  font-size: var(--small);
+}
+.activity-list strong {
+  text-transform: capitalize;
+}
+.activity-list time {
+  font-variant-numeric: tabular-nums;
+}
+.activity-list p,
+.activity-list a {
+  font-size: var(--small);
+  margin-top: 4px;
+}
+.autopilot-lookup {
+  margin-block: 32px;
+}
+.autopilot-lookup form {
+  max-width: 360px;
+  margin-top: 20px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 1000px) {
+  .autopilot-grid {
+    gap: 32px;
+  }
+}
+@media (max-width: 760px) {
+  .autopilot-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  .autopilot-config {
+    border-top: 1px solid var(--ink);
+    padding-top: 24px;
+  }
+  .autopilot-picker {
+    margin-block: 20px 24px;
+  }
+}
+@media (max-width: 700px) {
+  .nav-bar nav {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    column-gap: 22px;
+    row-gap: 0;
+  }
+  .nav-bar nav a {
+    min-height: 44px;
+  }
+  .autopilot-heading {
+    padding-block: 24px 16px;
+  }
+  .autopilot-heading p {
+    margin-top: 8px;
+  }
+  .autopilot-setup > .section-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .autopilot-step {
+    padding-block: 20px;
+  }
+}
+@media (max-width: 390px) {
+  .rule-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .activity-list li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .activity-list li > div:first-child {
+    flex-direction: row;
+    gap: 12px;
+  }
+}
+.autopilot-error:empty,
+.autopilot-feedback:empty {
+  margin: 0;
+  padding: 0;
+}
+.autopilot-feedback:not(:empty) {
+  margin-top: 12px;
+}

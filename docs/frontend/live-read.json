@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-13T05:52:57.776Z",
+  "at": "2026-10-14T08:21:27.789Z",
   "mode": "Read only; no signed or broadcast transactions",
   "rpcChecks": [
     {
@@ -23,15 +23,15 @@
   ],
   "state": {
     "mintPrice": "200000000000000000",
-    "totalCards": "0",
+    "totalCards": "1",
     "burnImd": "0",
     "lastBurnTime": "0",
     "hasBurned": false,
     "owner": "0xF2A606601bFE2508772e6E293C81d7d88D2d7385",
     "pendingOwner": "0x0000000000000000000000000000000000000000",
     "cards": "0x30527fd04188Fe44f1ccfaD0174C8256970B4313",
-    "time": "1791870767",
-    "block": "26181598",
+    "time": "1791966083",
+    "block": "26189508",
     "hicDecimals": 18,
     "hicSymbol": "HIC",
     "imdDecimals": 18,
@@ -43,9 +43,9 @@
     "input": "0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7",
     "output": "0x7cf6fd992e6ff892caa8651f6d4e93859e1c1c71",
     "amount": "100000000000000000",
-    "outputAmount": "38383827213974064381846",
-    "minOut": "38191908077904194059936",
-    "at": 1791870778716,
+    "outputAmount": "39263248785679145721050",
+    "minOut": "39066932541750749992444",
+    "at": 1791966089008,
     "key": {
       "fee": 12500,
       "hooks": "0x784ff9a3ac5d88a30bfff6f7f2a270161fbe6000",

@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-14T08:28:34.224Z",
+  "mode": "Mocked Ethereum RPC, holder wallet and AI. Agent signs real test transactions locally; no live broadcast.",
+  "checks": [
+    "Disconnected Autopilot exposes the product and connect action at 390",
+    "Create an encrypted agent key and offer one local export",
+    "Holder sets agent and default 2 / 0.5 IMD limits; setAgent is skipped once assigned",
+    "Holder funds exactly 0.003 ETH to generated agent; current balance shown",
+    "Rules start / stop and drop five untradable defaults",
+    "Save provider key encrypted and use only its own provider call",
+    "AI loop signs a fee-aware, slippage-protected buy locally with the agent",
+    "Malformed AI reply holds and oversize / foreign decisions are skipped",
+    "AI sell converts IMD value to the full position and protects net proceeds",
+    "AI settings have accessible labels and no automated accessibility violations",
+    "Lock / unlock round trip preserves API key and export-used state",
+    "Responsive production layouts and accessibility at 390, 500, 1440",
+    "A second tab cannot start the same card concurrently",
+    "Share uses actual closed-trade stats and existing card record route",
+    "Freeze is holder-signed, confirmed, and disables Start",
+    "No key or passphrase leaves the page; API key appears only in its provider header",
+    "Navigation / reload locks the key and retains local activity"
+  ],
+  "screenshots": [
+    "chromium-setup-first-screen-390.png",
+    "chromium-viewport-500.png",
+    "chromium-viewport-1440.png",
+    "chromium-ai-settings-390.png"
+  ],
+  "errors": [],
+  "batchMax": 3,
+  "browser": "chromium"
+}

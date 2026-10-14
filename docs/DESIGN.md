@@ -1,6 +1,6 @@
 # Handlers In Control design system
 
-This documents the implemented frontend in `web/src/`, not a proposed redesign. The assignment restricts writes to `web/`, `dist/`, and `docs/`, so this document is in `docs/` instead of the conflicting requested root path.
+This records the original frontend design. The current system, including Autopilot, is documented in [root DESIGN.md](../DESIGN.md).
 
 ## Overview
 

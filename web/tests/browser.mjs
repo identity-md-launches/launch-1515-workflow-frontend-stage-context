@@ -478,6 +478,7 @@ try {
           .isDisabled(),
         true,
       );
+      await ready(page, "Retry verification");
       s.codeMissing = false;
       await page
         .getByRole("button", { name: "Retry verification", exact: true })

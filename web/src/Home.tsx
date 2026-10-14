@@ -82,7 +82,7 @@ export function MintPanel() {
         <span className="numeric price">
           {c.state
             ? `${short(c.state.mintPrice, c.state.imdDecimals)} IMD`
-            : "Price loading"}
+            : "Checking price…"}
         </span>
       </div>
       <Field

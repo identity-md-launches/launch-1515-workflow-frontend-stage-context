@@ -1,51 +1,51 @@
 {
-  "at": "2026-10-13T06:32:41.255Z",
+  "at": "2026-10-14T08:21:16.934Z",
   "mode": "Mocked EIP-1193 wallet and JSON-RPC. No real signing or broadcasting.",
   "checks": [
     {
       "name": "Disconnected mobile first screen, missing wallet, keyboard dialog, static subpath resources",
       "passed": true,
-      "durationMs": 2913
+      "durationMs": 5408
     },
     {
       "name": "Wallet rejection recovery and unknown-chain switch → add → switch",
       "passed": true,
-      "durationMs": 1404
+      "durationMs": 2792
     },
     {
       "name": "Mint validation, exact approval, pending lock, confirmation, and setup checklist",
       "passed": true,
-      "durationMs": 3522
+      "durationMs": 6624
     },
     {
       "name": "Holder deposit, rules, agent, freeze/unfreeze, rename, withdrawal and holder-only balances",
       "passed": true,
-      "durationMs": 5694
+      "durationMs": 15286
     },
     {
       "name": "Wallet swap requires token approval and Permit2 authorization; router encodes attested pool and simulates",
       "passed": true,
-      "durationMs": 3048
+      "durationMs": 7215
     },
     {
       "name": "Agent page, eligibility, gross buy fee, net sell fee, freeze gating and no approval",
       "passed": true,
-      "durationMs": 2781
+      "durationMs": 5568
     },
     {
       "name": "Owner price bounds, burn and two-step ownership controls",
       "passed": true,
-      "durationMs": 3120
+      "durationMs": 5684
     },
     {
       "name": "Verification failure blocks writes and retry recovers",
       "passed": true,
-      "durationMs": 1436
+      "durationMs": 2520
     },
     {
       "name": "Mint allowance is capped and changed mint prices are rejected before signing",
       "passed": true,
-      "durationMs": 2054
+      "durationMs": 4122
     }
   ],
   "screenshots": [
