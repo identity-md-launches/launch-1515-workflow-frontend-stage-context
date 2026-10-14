@@ -1,0 +1,71 @@
+{
+  "at": "2026-10-14T10:07:00.784Z",
+  "mode": "Mocked EIP-1193 wallet and JSON-RPC. No real signing or broadcasting.",
+  "checks": [
+    {
+      "name": "Disconnected mobile first screen, missing wallet, keyboard dialog, static subpath resources",
+      "passed": true,
+      "durationMs": 3617
+    },
+    {
+      "name": "Wallet rejection recovery and unknown-chain switch → add → switch",
+      "passed": true,
+      "durationMs": 1376
+    },
+    {
+      "name": "Mint validation, exact approval, pending lock, confirmation, and setup checklist",
+      "passed": true,
+      "durationMs": 4025
+    },
+    {
+      "name": "Holder deposit, rules, agent, freeze/unfreeze, rename, withdrawal and holder-only balances",
+      "passed": true,
+      "durationMs": 5092
+    },
+    {
+      "name": "Wallet swap requires token approval and Permit2 authorization; router encodes attested pool and simulates",
+      "passed": true,
+      "durationMs": 2703
+    },
+    {
+      "name": "Agent page, eligibility, gross buy fee, net sell fee, freeze gating and no approval",
+      "passed": true,
+      "durationMs": 2637
+    },
+    {
+      "name": "Owner price bounds, burn and two-step ownership controls",
+      "passed": true,
+      "durationMs": 2598
+    },
+    {
+      "name": "Verification failure blocks writes and retry recovers",
+      "passed": true,
+      "durationMs": 1212
+    },
+    {
+      "name": "Mint allowance is capped and changed mint prices are rejected before signing",
+      "passed": true,
+      "durationMs": 1631
+    }
+  ],
+  "screenshots": [
+    "test/scratch/browser/chromium-home-390.png",
+    "test/scratch/browser/chromium-home-1440.png",
+    "test/scratch/browser/chromium-minted-setup-390.png",
+    "test/scratch/browser/chromium-holder-390.png",
+    "test/scratch/browser/chromium-swap-320.png",
+    "test/scratch/browser/chromium-agent-320.png",
+    "test/scratch/browser/chromium-builders-320.png"
+  ],
+  "errors": [],
+  "browser": "chromium",
+  "browserVersion": "156.0.8078.4",
+  "homeAxe": {
+    "violations": 0,
+    "passes": 46
+  },
+  "holderAxe": {
+    "violations": 0,
+    "passes": 46
+  }
+}

@@ -128,16 +128,16 @@
       "sha256": "e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e"
     },
     {
+      "path": "assets/index-BYp7lQYa.js",
+      "sha256": "faf6d0b873522318a295e99f27a34be3d1c18ee84e515797f52f30db521909a5"
+    },
+    {
       "path": "assets/index-CVMFdiGn.css",
       "sha256": "cd219ce86797f960fb70295a4dd9c5b3d1e27c652c3561c8ff014039b8a59aad"
     },
     {
-      "path": "assets/index-CesoM6Vf.js",
-      "sha256": "54327e0e252ce8a5544f1bcd0d9333a8631f8eb3d6a454a659755c9b7eb9fe67"
-    },
-    {
-      "path": "assets/index-DaVVuik3.js",
-      "sha256": "49a5d8f0add53a73a6b83cb83fcc7a9240890e9b9c2b86387aa135e59776ca71"
+      "path": "assets/index-DOJQ0FqM.js",
+      "sha256": "939a2305eed4f1bce8f1b2e16d3c8e2916e5a5c7e929a3fc7360c6f0ae750e27"
     },
     {
       "path": "assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2",
@@ -149,7 +149,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "2c8efc1bb6aba7105a9e948328dbabb6e73ef0b9fd3dd5a51aaab36269c4bef2"
+      "sha256": "8c7740bf04bd4e22dce0903cda11086d43c908e95a26b0e12a59696829d403fd"
     },
     {
       "path": "licenses/Archivo-OFL.txt",

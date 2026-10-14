@@ -21,7 +21,7 @@ Vite uses `base: './'`. Every route is a hash route and every bundled asset and 
 
 ## One runtime configuration
 
-`dist/imd-deployment.json` is the sole runtime deployment configuration. `src/config.ts` fetches it and loads the referenced ABIs; it verifies the attested implementation ABIs using canonical Keccak and the auxiliary ABI files using their asset SHA-256. `src/chain.ts` constructs RPC clients and takes every protocol address from this runtime configuration. Protocol addresses still come from the manifest. Autopilot adds only the six task-supplied watchlist defaults (HIC comes from the manifest) and the requested Flashbots/MEV Blocker RPC fallbacks.
+`dist/imd-deployment.json` is the sole runtime deployment configuration. `src/config.ts` fetches it and loads the referenced ABIs; it verifies the attested implementation ABIs using canonical Keccak and the auxiliary ABI files using their asset SHA-256. `src/chain.ts` constructs RPC clients and takes every protocol address from this runtime configuration. Autopilot watches only the manifest's HIC address by default. Holders can add other coin addresses; each must pass the Desk's `isTradable` check and use its exact launch pool. Flashbots and MEV Blocker follow the original RPCs as fallbacks.
 
 `deployment/handoff.json` and `deployment/network.json` are preserved build inputs copied from the supplied handoff, not a second runtime configuration. Do not replace them casually. The exported contract set is exactly LaunchToken, HandlerArt and HandlerDesk. The NFT is created internally by HandlerDesk; its address is read from `cards()`, its binding is checked, and its pinned implementation ABI is exported as an additional asset.
 

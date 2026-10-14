@@ -613,6 +613,9 @@ function AutopilotCard({
     );
   }
   const aiSaved = !!secret.current?.apiKey;
+  const watchedCount = new Set(
+    watched.toLowerCase().split(/[\s,]+/).filter(Boolean),
+  ).size;
   const recordUrl = new URL(location.href);
   recordUrl.hash = `/agent/${card.id}`;
   const results = card.wins + card.losses;
@@ -705,7 +708,9 @@ function AutopilotCard({
                   }
                 >
                   {working === "key"
-                    ? "Unlocking key…"
+                    ? vault
+                      ? "Unlocking key…"
+                      : "Creating key…"
                     : unlocked
                       ? "Agent key ready"
                       : vault
@@ -1224,12 +1229,12 @@ function AutopilotCard({
             </div>
             <details className="watchlist-editor">
               <summary>
-                Edit watchlist · {watched.split(/\s+/).filter(Boolean).length}{" "}
-                coins
+                Edit watchlist · {watchedCount}{" "}
+                {watchedCount === 1 ? "coin" : "coins"}
               </summary>
               <p>
-                Defaults: ZTO, INFER, HIC, SCOOP, SNITCH, DROP. Untradable coins
-                are dropped from each check.
+                HIC is watched by default. Add coin addresses below; untradable
+                coins are dropped from each check.
               </p>
               <div className="field">
                 <label htmlFor="watchlist">Coin addresses · one per line</label>
@@ -1273,7 +1278,10 @@ function AutopilotCard({
               </ul>
               {!!dropped.length && (
                 <details>
-                  <summary>{dropped.length} coins skipped</summary>
+                  <summary>
+                    {dropped.length} {dropped.length === 1 ? "coin" : "coins"}{" "}
+                    skipped
+                  </summary>
                   <ul className="dropped-coins">
                     {dropped.map((d) => (
                       <li key={d}>{d}</li>

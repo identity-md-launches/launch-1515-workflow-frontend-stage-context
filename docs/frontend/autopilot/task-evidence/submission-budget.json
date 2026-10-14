@@ -1,0 +1,11 @@
+{
+  "limitBytes": 8388608,
+  "fileCountExcludingThisReport": 281,
+  "completeTreeBytesExcludingThisReport": 4756504,
+  "reportReserveBytes": 4096,
+  "completeTreeBytesUpperBound": 4760600,
+  "distBytesIncludingManifest": 955367,
+  "passed": true,
+  "method": "Complete deliverable snapshot: all existing tracked and new unignored files, excluding supplied .imd inputs and scratch. Full uncompressed tree plus report allowance is below 8 MiB. A standalone Git bundle contains the same complete snapshot; original repository Git metadata is untouched. Dependency/cache directories and private test downloads are excluded.",
+  "completeSnapshotGitBundleBytesBeforeSizeRecording": 2227319
+}

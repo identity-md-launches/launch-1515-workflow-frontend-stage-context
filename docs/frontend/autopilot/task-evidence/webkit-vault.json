@@ -1,0 +1,11 @@
+{
+  "browser": "webkit",
+  "at": "2026-10-14T10:12:19.777Z",
+  "checks": [
+    "A pre-opened tab unlocks the original funded agent; creation/export changes synchronize",
+    "Concurrent creates and exports are serialized even with storage events delayed",
+    "Stale exports cannot erase a newer API key; stale API saves cannot reset export state",
+    "Without Web Locks, creating a key fails visibly without writing a vault"
+  ],
+  "errors": []
+}

@@ -24,7 +24,7 @@ The existing semantic tokens remain unchanged, in hexadecimal notation:
 | `--loss-text` | `#b02720` | Errors, negative results, Freeze control |
 | `--focus` | `#101010` | 2px keyboard outline, offset 4px |
 
-Statuses also use words: locked, unlocked, skipped, frozen, running and stopped. Color is not the only signal. No new theme or accent ramp was added. Rendered automated contrast checks are recorded in `docs/frontend/autopilot/validation.md`.
+Statuses also use words: locked, unlocked, skipped, frozen, running and stopped. Color is not the only signal. No new theme or accent ramp was added. Current rendered automated contrast checks are recorded in `docs/frontend/autopilot/task-validation.md`.
 
 ## Typography
 
@@ -67,12 +67,12 @@ Fields, buttons and structural panels use square corners and 1px borders. The ba
 | Saved-key synchronization | Same, `acceptVault()` / `vaultAction()` | A polite status beside step 1 explains another tab's change. Saved keys switch to Unlock; used exports disappear. Conflicting writes show a recoverable error, and changed encrypted secrets lock the tab. |
 | Start / Stop | Same | Explicit running state, status text, no automatic restart after reload; no queued overlapping checks |
 | Freeze | Same, `.autopilot-freeze` | Holder-only action with inline Confirm freeze / Cancel; unavailable when already frozen |
-| Watchlist | Same | Native details disclosure, labeled multiline address field, dropped-coin disclosure after a check |
+| Watchlist | Same | HIC-only default from the deployment manifest; native details disclosure, labeled multiline address field, unique coin count for newline/comma input and dropped-coin disclosure after a check. Counts use singular/plural labels. |
 | Activity | Same, `.activity-list` | Time, brain, decision, reason and transaction link; latest 200 local entries; actual closed-trade statistics in Share |
 
 Buttons retain distinct default, hover, disabled and focus states. Errors use alerts; loop status uses a polite status region. The original new-card print animation is gated by `prefers-reduced-motion: no-preference`; Autopilot adds no animation.
 
-The [revision review](docs/frontend/autopilot/revision.md) records all six Better Interface domains and the final Chromium/WebKit checks at 390, 500 and 1440px. The revision adds no colors, fonts, components with new styling, or animation.
+The [current task review](docs/frontend/autopilot/task-validation.md) records all six Better Interface domains and the final Chromium/WebKit checks at 390, 500 and 1440px. The HIC-only watchlist correction adds no colors, fonts, styled components or animation. Step 1 distinguishes “Creating key…” from “Unlocking key…” while preserving the same pending button and layout.
 
 ## Do's and don'ts
 

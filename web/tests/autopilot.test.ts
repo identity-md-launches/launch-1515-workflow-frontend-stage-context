@@ -13,6 +13,7 @@ import {
 } from "../src/autopilot/vault";
 import {
   DEFAULT_RULES,
+  defaultWatchlist,
   rulesDecision,
   validateDecision,
   parseDecision,
@@ -283,6 +284,7 @@ test("rules: momentum, minimum budget, every exit, cooldown, and sample windows"
     rulesDecision(s, { ...DEFAULT_RULES, samples: 61 }, E("0.5")),
   );
   assert.equal(watchlist(`${coin}\n${coin}`).length, 1);
+  assert.deepEqual(watchlist(defaultWatchlist(coin)), [coin]);
   assert.throws(() => watchlist("bad-address"));
 });
 test("provider calls carry only the provider key; snapshot excludes private material; errors never echo response", async () => {

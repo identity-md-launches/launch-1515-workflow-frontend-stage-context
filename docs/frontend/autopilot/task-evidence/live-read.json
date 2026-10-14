@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-14T10:07:41.908Z",
+  "mode": "Read only; no signed or broadcast transactions",
+  "rpcChecks": [
+    {
+      "url": "https://ethereum-rpc.publicnode.com",
+      "status": 200,
+      "body": {
+        "jsonrpc": "2.0",
+        "result": "0x1",
+        "id": 1
+      }
+    },
+    {
+      "url": "https://eth.drpc.org",
+      "status": 200,
+      "body": {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": "0x1"
+      }
+    }
+  ],
+  "state": {
+    "mintPrice": "200000000000000000",
+    "totalCards": "1",
+    "burnImd": "0",
+    "lastBurnTime": "0",
+    "hasBurned": false,
+    "owner": "0xF2A606601bFE2508772e6E293C81d7d88D2d7385",
+    "pendingOwner": "0x0000000000000000000000000000000000000000",
+    "cards": "0x30527fd04188Fe44f1ccfaD0174C8256970B4313",
+    "time": "1791972455",
+    "block": "26190039",
+    "hicDecimals": 18,
+    "hicSymbol": "HIC",
+    "imdDecimals": 18,
+    "imdSymbol": "IMD",
+    "tradable": true
+  },
+  "verification": "passed",
+  "mintQuote": {
+    "input": "0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7",
+    "output": "0x7cf6fd992e6ff892caa8651f6d4e93859e1c1c71",
+    "amount": "100000000000000000",
+    "outputAmount": "39263248785679145721050",
+    "minOut": "39066932541750749992444",
+    "at": 1791972462357,
+    "key": {
+      "fee": 12500,
+      "hooks": "0x784ff9a3ac5d88a30bfff6f7f2a270161fbe6000",
+      "currency0": "0x7cf6fd992e6ff892caa8651f6d4e93859e1c1c71",
+      "currency1": "0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7",
+      "tickSpacing": 60
+    },
+    "slippageBps": "50",
+    "net": false
+  },
+  "quote": "passed (simulation only)"
+}

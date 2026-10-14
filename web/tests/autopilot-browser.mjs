@@ -46,7 +46,7 @@ async function settled(page) {
   await page.waitForFunction(
     () =>
       ![...document.querySelectorAll("button")].some((b) =>
-        /Setting agent…|Setting limits…|Funding gas…|Unlocking key…|Saving key…/.test(
+        /Setting agent…|Setting limits…|Funding gas…|Creating key…|Unlocking key…|Saving key…/.test(
           b.textContent,
         ),
       ),
@@ -204,16 +204,23 @@ try {
     },
   );
   await check(
-    "Rules start / stop and drop five untradable defaults",
+    "Rules start / stop with HIC by default; holder-added untradable coins are dropped",
     async () => {
+      await page.locator(".watchlist-editor summary").click();
+      const addresses = page.getByLabel("Coin addresses · one per line");
+      assert.equal((await addresses.inputValue()).toLowerCase(), ADDR.hic);
+      await addresses.fill(`${ADDR.hic}\n${ADDR.other}`);
       await page.getByRole("button", { name: "Start", exact: true }).click();
       await page.getByText(/No rule triggered/).waitFor();
-      await page.getByText("5 coins skipped", { exact: true }).waitFor();
+      await page.getByText("1 coin skipped", { exact: true }).waitFor();
+      assert.equal(await page.locator(".coin-samples > li").count(), 1);
       assert.equal(s.agentWrites.length, 0);
       await page.getByRole("button", { name: "Stop", exact: true }).click();
       await page
         .getByText("Stopped. No new trades will be sent.", { exact: true })
         .waitFor();
+      await addresses.fill(ADDR.hic);
+      await page.locator(".watchlist-editor summary").click();
     },
   );
   const apiKey = "test-anthropic-api-secret";

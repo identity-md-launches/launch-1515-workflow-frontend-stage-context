@@ -229,15 +229,8 @@ export function watchlist(text: string): Address[] {
     ),
   ];
 }
-export function defaultWatchlist(hic: Address) {
-  return [
-    "0xd782Bdea4EF02a0Bd391eb9089470c8080f0A68e",
-    "0x53d0eA0A685220718Dc6a0a6e4617194C6F37921",
-    hic,
-    "0x7094b1ba79e7eb3fab7caa8aa9b45976cd120807",
-    "0x5e5B866B079d4063Ba080B758aEf127CCD570FEa",
-    "0x903b9AAb922859e83F16E07cC1F8cDd53EdB323e",
-  ].join("\n");
+export function defaultWatchlist(hic: Address): string {
+  return hic;
 }
 export function aiSnapshot(s: Snapshot, size: bigint) {
   return {
