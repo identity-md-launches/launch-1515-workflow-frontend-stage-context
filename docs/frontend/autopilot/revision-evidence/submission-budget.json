@@ -1,0 +1,11 @@
+{
+  "limitBytes": 8388608,
+  "fileCountExcludingThisReport": 269,
+  "completeTreeBytesExcludingThisReport": 4435937,
+  "reportReserveBytes": 4096,
+  "completeTreeBytesUpperBound": 4440033,
+  "distBytesIncludingManifest": 955532,
+  "passed": true,
+  "method": "All existing deliverable tracked/unignored files plus the required .imd-responses.json, excluding supplied inputs and scratch. Full uncompressed file tree plus a 4096-byte allowance for this report is below 8 MiB. A separate complete-tree Git bundle is measured in scratch, with no dependency/cache directories or unrelated historical commits.",
+  "completeTreeGitBundleBytesBeforeSizeRecording": 1998349
+}

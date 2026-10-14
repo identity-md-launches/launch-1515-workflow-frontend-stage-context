@@ -267,6 +267,28 @@ try {
     },
   );
   await check(
+    "An AI hold with an empty reason appends an explained Activity row",
+    async () => {
+      reply = { action: "hold", reason: "" };
+      const before = await page.locator(".activity-list > li").count();
+      const requestsBefore = providerRequests.length;
+      await page.getByRole("button", { name: "Start", exact: true }).click();
+      await page
+        .getByText("Running. Next check every 60 seconds.", { exact: true })
+        .waitFor();
+      await page
+        .getByText("AI chose hold without a reason.", { exact: true })
+        .waitFor();
+      assert.equal(
+        await page.locator(".activity-list > li").count(),
+        before + 1,
+      );
+      assert.equal(providerRequests.length, requestsBefore + 1);
+      await page.getByRole("button", { name: "Stop", exact: true }).click();
+      assert.equal(s.agentWrites.length, 1);
+    },
+  );
+  await check(
     "Malformed AI reply holds and oversize / foreign decisions are skipped",
     async () => {
       for (const [response, message] of [

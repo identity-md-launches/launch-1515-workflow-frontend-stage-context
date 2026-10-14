@@ -1,0 +1,34 @@
+{
+  "slogan": {
+    "x": 20,
+    "y": 250.390625,
+    "width": 350,
+    "height": 24
+  },
+  "bannerBefore": {
+    "x": 20,
+    "y": 290.390625,
+    "width": 350,
+    "height": 48
+  },
+  "bannerWithoutSlogan": {
+    "x": 20,
+    "y": 258.390625,
+    "width": 350,
+    "height": 48
+  },
+  "staleCreation": {
+    "originalAddress": "0x35cAb6B9162ADF01ffAb3D35271B6e9450F4558F",
+    "storedAddress": "0xDd51BBA3FC826B86A675630F4d40beDDAF7ce871",
+    "overwritten": true,
+    "originalFundedWei": "3000000000000000"
+  },
+  "originalUnlockFailed": true,
+  "staleExportOffered": 1,
+  "exportedSameKeyTwice": true,
+  "emptyHold": {
+    "providerRequests": 1,
+    "before": 0,
+    "after": 0
+  }
+}

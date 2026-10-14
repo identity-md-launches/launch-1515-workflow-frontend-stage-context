@@ -7,6 +7,9 @@ import {
   decryptSecrets,
   ITERATIONS,
   redact,
+  saveVault,
+  loadVault,
+  VaultConflictError,
 } from "../src/autopilot/vault";
 import {
   DEFAULT_RULES,
@@ -156,6 +159,75 @@ test("validator rejects oversized, below-minimum, foreign/untradable, frozen, re
     )?.amount,
     E("2"),
   );
+});
+test("vault writes reject stale creation, API updates and export flags without losing saved secrets", async () => {
+  const previous = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
+  const storage = new Map<string, string>();
+  Object.defineProperty(globalThis, "localStorage", {
+    configurable: true,
+    value: {
+      getItem: (key: string) => storage.get(key) ?? null,
+      setItem: (key: string, value: string) => storage.set(key, value),
+    },
+  });
+  try {
+    const passphrase = "vault conflict regression passphrase";
+    const first = {
+      address: agent.address,
+      exported: false,
+      encrypted: await encryptSecrets(
+        { privateKey: agent.privateKey },
+        passphrase,
+        "card:1",
+      ),
+    };
+    saveVault("card:1", first, undefined);
+    const other = newAgent();
+    const replacement = {
+      address: other.address,
+      exported: false,
+      encrypted: await encryptSecrets(
+        { privateKey: other.privateKey },
+        passphrase,
+        "card:1",
+      ),
+    };
+    assert.throws(
+      () => saveVault("card:1", replacement, undefined),
+      VaultConflictError,
+    );
+    const exported = { ...first, exported: true };
+    saveVault("card:1", exported, first);
+    const apiUpdate = {
+      ...first,
+      encrypted: await encryptSecrets(
+        { privateKey: agent.privateKey, apiKey: "test-new-api-key" },
+        passphrase,
+        "card:1",
+      ),
+    };
+    assert.throws(
+      () => saveVault("card:1", apiUpdate, first),
+      VaultConflictError,
+    );
+    saveVault("card:1", { ...apiUpdate, exported: true }, exported);
+    assert.throws(
+      () => saveVault("card:1", exported, first),
+      VaultConflictError,
+    );
+    const latest = loadVault("card:1")!;
+    assert.equal(latest.exported, true);
+    assert.deepEqual(
+      await decryptSecrets(latest.encrypted, passphrase, "card:1"),
+      {
+        privateKey: agent.privateKey,
+        apiKey: "test-new-api-key",
+      },
+    );
+  } finally {
+    if (previous) Object.defineProperty(globalThis, "localStorage", previous);
+    else Reflect.deleteProperty(globalThis, "localStorage");
+  }
 });
 test("malformed AI replies are holds and model transaction fields never become executable", () => {
   for (const text of [
@@ -374,6 +446,25 @@ test("engine revalidates after decision, blocks changed limits, and sends at mos
   changed.engine.stop();
   assert.equal(changed.sends(), 0);
   assert.equal(changed.entries.at(-1)?.decision, "skipped");
+});
+test("AI holds with empty or whitespace reasons each produce an explained activity entry", async () => {
+  for (const reason of ["", "   \n\t", "Wait for more price history."]) {
+    const h = harness({
+      brain: "ai",
+      decide: async () =>
+        parseDecision(JSON.stringify({ action: "hold", reason })),
+    });
+    h.engine.start();
+    await until(() => !h.engine.busy);
+    h.engine.stop();
+    assert.equal(h.sends(), 0);
+    assert.equal(h.entries.length, 1);
+    assert.equal(h.entries[0].decision, "hold");
+    assert.equal(
+      h.entries[0].reason,
+      reason.trim() || "AI chose hold without a reason.",
+    );
+  }
 });
 test("engine nonoverlap, stop during brain request, and accelerated interval", async () => {
   let resolve!: (d: Decision) => void;

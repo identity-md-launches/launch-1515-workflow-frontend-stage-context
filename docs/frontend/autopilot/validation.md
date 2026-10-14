@@ -1,6 +1,6 @@
 # Autopilot implementation and validation
 
-Worker validation on 2026-10-14. Complete for the stated implementation scope. These are local worker observations, not independent certification of behavior or financial/security guarantees.
+Initial implementation validation on 2026-10-14, retained as historical evidence. The reopened findings, fixes and current results are in [revision validation](revision.md). These are local worker observations, not independent certification of behavior or financial/security guarantees.
 
 ## Delivered scope
 

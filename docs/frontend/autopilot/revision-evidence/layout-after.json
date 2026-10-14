@@ -1,0 +1,25 @@
+{
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "sloganParagraphs": 0,
+  "disconnectedBanner": {
+    "x": 20,
+    "y": 258.390625,
+    "width": 350,
+    "height": 48
+  },
+  "connectedBanner": {
+    "x": 20,
+    "y": 258.390625,
+    "width": 350,
+    "height": 48
+  },
+  "createButton": {
+    "x": 20,
+    "y": 678.1875,
+    "width": 156,
+    "height": 44.390625
+  }
+}

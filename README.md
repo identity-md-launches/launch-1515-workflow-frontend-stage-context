@@ -27,6 +27,8 @@ Connect the holder wallet, select an owned card, then create or unlock its agent
 
 The fresh secp256k1 key is generated locally. Agent and API secrets are stored together using AES-256-GCM and PBKDF2-SHA-256 with **200,000 iterations**, random salt/IV and a holder/card-specific authenticated context. A passphrase of at least 12 characters is required. The key can be exported once as a plaintext local download; keep that backup private. Reloading requires unlocking. The private key and passphrase never enter requests. The API key goes only to the provider endpoint selected when it was saved.
 
+Key creation, unlocking, API-key saves and export share a per-card Web Lock. Each operation reads the saved vault inside the lock and rejects a stale copy before writing. Other tabs update their saved-key and export status; an encrypted-key change locks their in-memory secrets and stops their loop. A tab opened before creation switches to unlocking the existing key. Browsers without Web Locks cannot create or save keys.
+
 Rules use the last 60 in-memory samples, buying a 5% rise over 10 samples only when no position is held. Default exits are +12%, -8%, or 12 hours; cooldown after a sale is one hour. All rule numbers are editable. Position ages and recent sales are reconstructed from on-chain trade/withdrawal events on start; old positions are recognized even after a reload. Sampling survives Stop/Start in the same page and resets on reload/navigation.
 
 Your AI supports Anthropic (default model `claude-haiku-5-5`) or a holder-supplied HTTPS OpenAI-compatible base URL/full chat-completions endpoint and model. The provider must allow browser CORS requests and accept the supplied model/key. Each call receives only the trading snapshot and instructions, and returns one JSON decision. For AI sells, `imd` means the desired current IMD value to liquidate; the validator converts it to token units and rejects an excess. Invalid JSON becomes hold. Provider errors are logged without echoing response bodies.
@@ -42,13 +44,15 @@ npm test --prefix web
 web/node_modules/.bin/tsx --test web/tests/autopilot.test.ts
 npm run test:browser --prefix web
 node web/tests/autopilot-browser.mjs
+node web/tests/autopilot-vault-browser.mjs
 HIC_BROWSER=webkit node web/tests/autopilot-browser.mjs
+HIC_BROWSER=webkit node web/tests/autopilot-vault-browser.mjs
 web/node_modules/.bin/tsx web/tests/live.ts
 ```
 
 Install Playwright Chromium/WebKit and their platform libraries when needed. Test scripts run their own bounded local server under `/preview/`. An optional `HIC_WEBKIT_EXECUTABLE` points to a prepared WebKit launcher. All interaction tests use mocked wallets/RPC/providers and never broadcast real transactions. The live script performs reads and quote simulation only.
 
-Current results: production build/typecheck and asset/ABI verification pass; the existing 11 unit checks and 9 browser scenarios pass. Autopilot’s encryption, validator, engine, history and RPC checks, and Chromium/WebKit interaction results are recorded in [validation](docs/frontend/autopilot/validation.md), with limitations and screenshots. The required home design probe passes all 16 checks. Live verification reads a 0.2 IMD mint price. No funded live trade or paid AI provider call was made.
+Current revision results: production build/typecheck and asset/ABI verification pass; 25 unit checks and the existing 9 browser scenarios pass. Autopilot passes 18 interaction scenarios plus 4 cross-tab vault scenarios in both Chromium and WebKit. The required home design probe passes all 16 checks. See the [revision validation](docs/frontend/autopilot/revision.md) for reproductions, commands, screenshots and limitations. The [initial validation](docs/frontend/autopilot/validation.md) retains the earlier read-only live check that returned a 0.2 IMD mint price. No funded live trade or paid AI provider call was made.
 
 The implemented visual system is documented in [DESIGN.md](DESIGN.md). Detailed existing frontend setup remains in [web/README.md](web/README.md).
 

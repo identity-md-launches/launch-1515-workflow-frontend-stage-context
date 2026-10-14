@@ -128,7 +128,37 @@ export function loadVault(key: string): VaultRecord | undefined {
     throw Error("Invalid saved agent key.");
   return record;
 }
-export function saveVault(key: string, record: VaultRecord) {
+export class VaultConflictError extends Error {
+  constructor() {
+    super(
+      "Saved keys changed in another tab. Unlock the saved agent key and try again.",
+    );
+  }
+}
+export const sameVault = (a?: VaultRecord, b?: VaultRecord) =>
+  JSON.stringify(a) === JSON.stringify(b);
+
+/** Use a separate, short-lived lock from the card's running-engine lock. */
+export async function withVaultLock<T>(
+  key: string,
+  operation: (current: VaultRecord | undefined) => Promise<T>,
+): Promise<T> {
+  if (!navigator.locks)
+    throw Error(
+      "This browser does not support tab locking. Use a current browser to save agent keys safely.",
+    );
+  return navigator.locks.request(key + ":vault", () =>
+    operation(loadVault(key)),
+  );
+}
+
+/** Call inside withVaultLock. Recheck after asynchronous encryption, before writing. */
+export function saveVault(
+  key: string,
+  record: VaultRecord,
+  expected: VaultRecord | undefined,
+) {
+  if (!sameVault(loadVault(key), expected)) throw new VaultConflictError();
   localStorage.setItem(key + ":vault", JSON.stringify(record));
 }
 export function redact(

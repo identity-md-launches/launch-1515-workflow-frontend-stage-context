@@ -169,7 +169,9 @@ export function parseDecision(text: string): Decision {
       action: d.action,
       coin: d.coin,
       imd: d.imd,
-      reason: d.reason.slice(0, 600),
+      reason:
+        d.reason.trim().slice(0, 600) ||
+        `AI chose ${d.action} without a reason.`,
     };
   } catch {
     return {

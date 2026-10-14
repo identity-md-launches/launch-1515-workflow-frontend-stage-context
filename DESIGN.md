@@ -38,6 +38,8 @@ The shared frame is `min(1200px, 100% - 80px)`. Above 1500px it becomes `min(128
 
 Autopilot uses `minmax(0, 1.2fr) minmax(0, 1fr)` columns with a 72px gap, reduced to 32px at 1000px. It becomes one column at 760px: setup first, brain/settings second, activity below. The card picker is at most 520px. Rule fields have two columns, collapsing at 390px; shared paired inputs collapse at 360px. Mobile navigation wraps to a second row rather than scrolling sideways. Controls remain in normal flow; no sticky toolbar obscures content.
 
+The Autopilot heading is the task name alone, followed by the tab-runtime banner and card picker. The revision removed its decorative slogan without changing spacing tokens or breakpoints; the banner and setup move up 32px at 390px. The Create agent key button ends at approximately 723px in the inspected 390×844 Chromium viewport.
+
 Spacing uses the existing 8, 12, 16, 20, 24 and 32px steps, with larger gaps between sections. Steps are separated by rules and 20–24px vertical padding. Activity is a two-column time/decision list, stacked at 390px. Prose is capped at 65ch. Full IDs and errors wrap with `overflow-wrap:anywhere`.
 
 Production screenshots and interaction checks cover Autopilot at 390, 500 and 1440px in Chromium and WebKit. The 390px initial screen contains the product, card picker, passphrase and Create agent key button. The home probe also covers 320px reflow. These are emulated viewports, not physical-device or native-zoom tests.
@@ -62,12 +64,15 @@ Fields, buttons and structural panels use square corners and 1px borders. The ba
 | `Step` | `web/src/Autopilot.tsx` | Local ordered setup pattern with number, heading, textual status and one principal action |
 | Brain toggle | Same, `.brain-toggle` | Native radio group, keyboard support, visible selected state; settings disabled during a run |
 | Setup feedback | Same, `feedback()` | Errors and transaction progress adjacent to the affected step; passphrase error associates with its input and returns focus |
+| Saved-key synchronization | Same, `acceptVault()` / `vaultAction()` | A polite status beside step 1 explains another tab's change. Saved keys switch to Unlock; used exports disappear. Conflicting writes show a recoverable error, and changed encrypted secrets lock the tab. |
 | Start / Stop | Same | Explicit running state, status text, no automatic restart after reload; no queued overlapping checks |
 | Freeze | Same, `.autopilot-freeze` | Holder-only action with inline Confirm freeze / Cancel; unavailable when already frozen |
 | Watchlist | Same | Native details disclosure, labeled multiline address field, dropped-coin disclosure after a check |
 | Activity | Same, `.activity-list` | Time, brain, decision, reason and transaction link; latest 200 local entries; actual closed-trade statistics in Share |
 
 Buttons retain distinct default, hover, disabled and focus states. Errors use alerts; loop status uses a polite status region. The original new-card print animation is gated by `prefers-reduced-motion: no-preference`; Autopilot adds no animation.
+
+The [revision review](docs/frontend/autopilot/revision.md) records all six Better Interface domains and the final Chromium/WebKit checks at 390, 500 and 1440px. The revision adds no colors, fonts, components with new styling, or animation.
 
 ## Do's and don'ts
 

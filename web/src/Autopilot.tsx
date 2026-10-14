@@ -18,6 +18,9 @@ import {
   newAgent,
   loadVault,
   saveVault,
+  withVaultLock,
+  sameVault,
+  VaultConflictError,
   storageKey,
   redact,
   type Secrets,
@@ -102,7 +105,6 @@ export function Autopilot({
     <div className="autopilot-page">
       <div className="page-heading autopilot-heading">
         <h1>Autopilot</h1>
-        <p>Your card. Your rules. Your agent.</p>
       </div>
       <p className="autopilot-banner">
         Autopilot runs only while this tab is open.
@@ -232,6 +234,7 @@ function AutopilotCard({
   const samples = useRef(new Map<string, number[]>());
   const [card, setCard] = useState(initial);
   const [vault, setVault] = useState<VaultRecord>();
+  const vaultRef = useRef<VaultRecord | undefined>(undefined);
   const [unlocked, setUnlocked] = useState(false);
   const [passphrase, setPassphrase] = useState("");
   const [apiKey, setApiKey] = useState("");
@@ -259,6 +262,7 @@ function AutopilotCard({
   const [errorAt, setErrorAt] = useState("");
   const [stageAt, setStageAt] = useState("");
   const [storageError, setStorageError] = useState("");
+  const [vaultNotice, setVaultNotice] = useState("");
   const [stage, setStage] = useState<TxStage>({ status: "idle", message: "" });
   const [fundHash, setFundHash] = useState<Hex>();
   const [freezeConfirm, setFreezeConfirm] = useState(false);
@@ -281,10 +285,32 @@ function AutopilotCard({
   } catch {
     /* Show validation on submit. */
   }
+  function acceptVault(next?: VaultRecord, recovered?: Secrets) {
+    if (!mounted.current) return;
+    const changed =
+      vaultRef.current?.address !== next?.address ||
+      JSON.stringify(vaultRef.current?.encrypted) !==
+        JSON.stringify(next?.encrypted);
+    if (recovered) {
+      secret.current = recovered;
+      setUnlocked(true);
+      setVaultNotice("");
+    } else if (changed) {
+      runner.current?.stop(
+        "Stopped: saved keys changed in another tab. Unlock them again.",
+      );
+      secret.current = undefined;
+      setUnlocked(false);
+      setPassphrase("");
+      setApiKey("");
+    }
+    vaultRef.current = next;
+    setVault(next);
+  }
   useEffect(() => {
     mounted.current = true;
     try {
-      setVault(loadVault(key));
+      acceptVault(loadVault(key));
       setActivity(readActivity(key));
       const prefs = localStorage.getItem(key + ":preferences");
       if (prefs) {
@@ -300,7 +326,38 @@ function AutopilotCard({
         "Saved data could not be read. Check browser storage before creating a key.",
       );
     }
+    const syncVault = (event: StorageEvent) => {
+      if (
+        event.storageArea !== localStorage ||
+        (event.key !== null && event.key !== key + ":vault")
+      )
+        return;
+      try {
+        // Read storage, not event.newValue: another queued write may already be newer.
+        const next = loadVault(key);
+        if (sameVault(next, vaultRef.current)) return;
+        acceptVault(next);
+        setVaultNotice(
+          next
+            ? "Saved key updated in another tab. Unlock it here if it is locked."
+            : "Saved key was removed in another tab.",
+        );
+      } catch {
+        runner.current?.stop(
+          "Stopped because the saved key could not be read.",
+        );
+        secret.current = undefined;
+        setUnlocked(false);
+        setPassphrase("");
+        setApiKey("");
+        setStorageError(
+          "Saved key could not be read. Check browser storage before continuing.",
+        );
+      }
+    };
+    window.addEventListener("storage", syncVault);
     return () => {
+      window.removeEventListener("storage", syncVault);
       mounted.current = false;
       runner.current?.stop("Stopped when leaving Autopilot.");
       secret.current = undefined;
@@ -352,6 +409,15 @@ function AutopilotCard({
       await fn();
     } catch (e) {
       if (mounted.current) {
+        if (e instanceof VaultConflictError) {
+          try {
+            acceptVault(loadVault(key));
+          } catch {
+            setStorageError(
+              "Saved key could not be read. Check browser storage before continuing.",
+            );
+          }
+        }
         setError(safe(e));
         if (name === "key")
           document.getElementById("agent-passphrase")?.focus();
@@ -361,6 +427,18 @@ function AutopilotCard({
       actionLock.current = false;
       if (mounted.current) setWorking("");
     }
+  }
+  function vaultAction(
+    name: string,
+    operation: (current: VaultRecord | undefined) => Promise<void>,
+  ) {
+    return action(name, () =>
+      withVaultLock(key, async (current) => {
+        if (!mounted.current) return;
+        if (!sameVault(current, vault)) throw new VaultConflictError();
+        await operation(current);
+      }),
+    );
   }
   function log(entry: Activity) {
     const nextEntry = {
@@ -454,7 +532,8 @@ function AutopilotCard({
           );
           return;
         }
-        if (!mounted.current || !canRun.current) return;
+        if (!mounted.current || !canRun.current || secret.current !== keys)
+          return;
         const done = new Promise<void>((resolve) => {
           release.current = resolve;
         });
@@ -587,21 +666,23 @@ function AutopilotCard({
                     !ready || !!working || unlocked || !!storageError || running
                   }
                   onClick={() =>
-                    void action("key", async () => {
-                      if (vault) {
+                    void vaultAction("key", async (current) => {
+                      if (current) {
                         const recovered = await decryptSecrets(
-                          vault.encrypted,
+                          current.encrypted,
                           passphrase,
                           key,
                         );
                         if (
                           !same(
                             privateKeyToAccount(recovered.privateKey).address,
-                            vault.address,
+                            current.address,
                           )
                         )
                           throw Error("Saved key and agent address disagree.");
-                        secret.current = recovered;
+                        if (!sameVault(loadVault(key), current))
+                          throw new VaultConflictError();
+                        acceptVault(current, recovered);
                       } else {
                         const fresh = newAgent();
                         const values: Secrets = {
@@ -616,11 +697,9 @@ function AutopilotCard({
                             key,
                           ),
                         };
-                        saveVault(key, record);
-                        setVault(record);
-                        secret.current = values;
+                        saveVault(key, record, current);
+                        acceptVault(record, values);
                       }
-                      setUnlocked(true);
                       setPassphrase("");
                     })
                   }
@@ -636,10 +715,14 @@ function AutopilotCard({
                 {unlocked && vault && !vault.exported && (
                   <button
                     onClick={() =>
-                      void action("export", async () => {
-                        const next = { ...vault, exported: true };
-                        saveVault(key, next);
-                        setVault(next);
+                      void vaultAction("export", async (current) => {
+                        if (!current || current.exported || !secret.current)
+                          throw Error(
+                            "Key export is no longer available. Check the saved key status.",
+                          );
+                        const next = { ...current, exported: true };
+                        saveVault(key, next, current);
+                        acceptVault(next);
                         const url = URL.createObjectURL(
                           new Blob([secret.current!.privateKey + "\n"], {
                             type: "text/plain",
@@ -681,6 +764,9 @@ function AutopilotCard({
                 </>
               )}
               {feedback("key")}
+              <p className="muted autopilot-feedback" role="status">
+                {vaultNotice}
+              </p>
             </Step>
             <Step
               number={2}
@@ -1035,11 +1121,11 @@ function AutopilotCard({
                 <button
                   disabled={!unlocked || !vault}
                   onClick={() =>
-                    void action("ai", async () => {
-                      if (!vault || !secret.current)
+                    void vaultAction("ai", async (current) => {
+                      if (!current || !secret.current)
                         throw Error("Unlock your agent key first.");
                       const original = await decryptSecrets(
-                        vault.encrypted,
+                        current.encrypted,
                         passphrase,
                         key,
                       );
@@ -1060,16 +1146,15 @@ function AutopilotCard({
                         providerBinding: providerBinding(ai),
                       };
                       const next = {
-                        ...vault,
+                        ...current,
                         encrypted: await encryptSecrets(
                           values,
                           passphrase,
                           key,
                         ),
                       };
-                      saveVault(key, next);
-                      secret.current = values;
-                      setVault(next);
+                      saveVault(key, next, current);
+                      acceptVault(next, values);
                       setApiKey("");
                       setPassphrase("");
                       localStorage.setItem(
